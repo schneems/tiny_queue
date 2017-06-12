@@ -89,3 +89,7 @@ The call to `tiny_queue_pop` will block until there are elements in the queue. E
 
 This simple example, the thread only does one calculation, outputs to stdout and then exits. In a real application you would likely do work in a loop until you sent some kind of a signal to tell the worker threads (consumers) to stop. For example "poisioning" the queue is simple and effective.
 
+
+## License
+
+MIT (modified) see LICENSE for details.
