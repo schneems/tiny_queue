@@ -7,14 +7,15 @@
 
 #include "tiny_queue.h"
 
-#define NUMTHREADS 4
+#define NUMTHREADS 10
 
+// The queue accepts pointers so we can pass arbitrary structs into our queue.
 typedef struct work_t {
-  char a[1024];
-  char b[1024];
+  int a;
+  int b;
 } work_t;
 
-
+// This function will be passed in to `pthread_create`
 void *do_work(void *arg) {
   // Store queue argument as new variable
   tiny_queue_t *my_queue = arg;
@@ -22,9 +23,10 @@ void *do_work(void *arg) {
   // Pop work off of queue, thread blocks here till queue has work
   work_t *work = tiny_queue_pop(my_queue);
 
-  // Do work
-  printf("Working on %s %s\n", work->a, work->b);
-
+  // Do work, we're not really doing anything here, but you
+  // could
+  printf("(%i * %i) = %i\n", work->a, work->b, work->a * work->b);
+  free(work);
   return 0;
 }
 
@@ -44,13 +46,12 @@ int main(){
     }
   }
 
-  // Push "work" onto queue
+  // Produce "work" and add it on to the queue
   for (i=0; i < NUMTHREADS; i++) {
-    printf("num %i\n", i);
+    // Allocate an object to push onto queue
     struct work_t* work = (struct work_t*)malloc(sizeof(struct work_t));
-
-    sprintf(work->a, "string_%i", i); // puts string into buffer
-    sprintf(work->b, "string_%i", i + 1); // puts string into buffer
+    work->a = i+1;
+    work->b = 2 *(i+1);
 
     // Every time an item is added to the queue, a thread that is
     // Blocked by `tiny_queue_pop` will unblock
