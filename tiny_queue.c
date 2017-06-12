@@ -5,16 +5,16 @@
 #include <string.h>
 
 typedef struct tiny_queue_t {
-  struct tiny_linked_list* head;
-  struct tiny_linked_list* rear;
+  struct tiny_linked_list_t* head;
+  struct tiny_linked_list_t* rear;
   pthread_mutex_t mutex;
   pthread_cond_t wakeup;
 } tiny_queue_t;
 
-typedef struct tiny_linked_list {
+typedef struct tiny_linked_list_t {
   void *data;
-  struct tiny_linked_list* next;
-} tiny_linked_list;
+  struct tiny_linked_list_t* next;
+} tiny_linked_list_t;
 
 tiny_queue_t* tiny_queue_create() {
   struct tiny_queue_t* queue = (struct tiny_queue_t*)malloc(sizeof(struct tiny_queue_t));
@@ -28,7 +28,7 @@ tiny_queue_t* tiny_queue_create() {
 
 void tiny_queue_push(tiny_queue_t *queue, void *x) {
   pthread_mutex_lock(&queue->mutex);
-    struct tiny_linked_list* new_node = (struct tiny_linked_list*)malloc(sizeof(struct tiny_linked_list));
+    struct tiny_linked_list_t* new_node = (struct tiny_linked_list_t*)malloc(sizeof(struct tiny_linked_list_t));
     new_node->data = x;
     new_node->next = NULL;
 
@@ -48,7 +48,7 @@ void *tiny_queue_pop(tiny_queue_t *queue) {
       pthread_cond_wait(&queue->wakeup, &queue->mutex);
     }
 
-    struct tiny_linked_list* current_head = queue->head;
+    struct tiny_linked_list_t* current_head = queue->head;
     void *data = current_head->data;
     if(queue->head == queue->rear) {
       queue->head = queue->rear = NULL;
