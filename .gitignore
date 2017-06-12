@@ -1,0 +1,8 @@
+.vagrant/*
+*.o
+
+# binaries
+
+hello_struct
+hello
+hello_threads
