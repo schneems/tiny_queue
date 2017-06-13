@@ -3,7 +3,7 @@
 
 typedef struct tiny_queue_t {
   struct tiny_lined_list_t* head;
-  struct tiny_lined_list_t* rear;
+  struct tiny_lined_list_t* tail;
   pthread_mutex_t mutex;
   pthread_cond_t wakeup;
 } tiny_queue_t;
