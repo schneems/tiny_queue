@@ -22,4 +22,6 @@ int tiny_queue_push(tiny_queue_t *queue, void *x);
 // Pop pointer from tiny_queue
 void *tiny_queue_pop(tiny_queue_t *queue);
 
+// Destroy the queue with all elements
+int tiny_queue_destroy(tiny_queue_t *queue);
 #endif

@@ -37,6 +37,11 @@ int main(){
   // Create new queue
   tiny_queue_t *my_queue = tiny_queue_create();
 
+  if (my_queue == NULL) {
+    fprintf(stderr, "Cannot creare the queue\n");
+    return -1;
+  }
+
   // Create thread pool
   for (i=0; i < NUMTHREADS; i++) {
     // Pass queue to new thread
@@ -55,7 +60,10 @@ int main(){
 
     // Every time an item is added to the queue, a thread that is
     // Blocked by `tiny_queue_pop` will unblock
-    tiny_queue_push(my_queue, work);
+    if (tiny_queue_push(my_queue, work) != 0) {
+        fprintf(stderr, "Cannot push an element in the queue\n");
+        return -1;
+    }
   }
 
   // sleep(4);
@@ -64,5 +72,13 @@ int main(){
   // Join all the threads
   for (i=0; i < NUMTHREADS; i++) {
     pthread_join(threadpool[i], NULL); // wait for producer to exit
+  }
+
+  if (tiny_queue_destroy(my_queue) != 0) {
+    fprintf(stderr, "Cannot destroy the queue, but it doesn't matter becaus");
+    fprintf(stderr, "e the program will exit instantly\n");
+    return -1;
+  } else {
+    return 0;
   }
 }

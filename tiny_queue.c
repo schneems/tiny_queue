@@ -79,3 +79,25 @@ void *tiny_queue_pop(tiny_queue_t *queue) {
 
   return data;
 }
+
+// Destroy the queue with all elements
+int tiny_queue_destroy(tiny_queue_t *queue) {
+  if (pthread_mutex_destroy(&queue->mutex) != 0 ||
+      pthread_cond_destroy(&queue->wakeup) != 0)
+    return -1;
+
+  struct tiny_linked_list_t *node, *next;
+  node = queue->head;
+
+  if (node != NULL) {
+    while (node->next != NULL) {
+      next = node->next;
+      free(node);
+      node = next;
+    }
+  }
+
+  free(queue);
+
+  return 0;
+}
