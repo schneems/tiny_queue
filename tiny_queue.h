@@ -16,8 +16,8 @@ typedef struct tiny_lined_list_t {
 // Create an instance of tiny_queue
 tiny_queue_t* tiny_queue_create();
 
-// Push pointer onto tiny_queue
-void tiny_queue_push(tiny_queue_t *queue, void *x);
+// Push pointer onto tiny_queue, return -1 on error
+int tiny_queue_push(tiny_queue_t *queue, void *x);
 
 // Pop pointer from tiny_queue
 void *tiny_queue_pop(tiny_queue_t *queue);
