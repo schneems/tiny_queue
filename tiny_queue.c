@@ -28,9 +28,12 @@ tiny_queue_t* tiny_queue_create() {
   queue->head = NULL;
   queue->tail = NULL;
 
-  queue->mutex  = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-  queue->wakeup = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
-  return queue;
+  if(pthread_mutex_init(&queue->mutex, NULL) == 0 &&
+     pthread_cond_init(&queue->wakeup, NULL) == 0)
+      return queue;
+
+  free(queue);
+  return NULL;
 }
 
 // Push a pointer onto the queue, return -1 on error
