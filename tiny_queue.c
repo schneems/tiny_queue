@@ -28,7 +28,7 @@ tiny_queue_t* tiny_queue_create() {
   queue->head = NULL;
   queue->tail = NULL;
 
-  if(pthread_mutex_init(&queue->mutex, NULL) == 0 &&
+  if(pthread_mutex_init(&queue->mutex, NULL) == 0 ||
      pthread_cond_init(&queue->wakeup, NULL) == 0)
     return queue;
 
