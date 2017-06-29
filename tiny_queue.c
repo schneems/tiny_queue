@@ -3,20 +3,7 @@
 #include <pthread.h>
 #include <sys/types.h>
 #include <string.h>
-
-// Struct to hold the queue
-typedef struct tiny_queue_t {
-  struct tiny_linked_list_t* head;
-  struct tiny_linked_list_t* tail;
-  pthread_mutex_t mutex;
-  pthread_cond_t wakeup;
-} tiny_queue_t;
-
-// Linked list that holds the data in the queue
-typedef struct tiny_linked_list_t {
-  void *data;
-  struct tiny_linked_list_t* next;
-} tiny_linked_list_t;
+#include "tiny_queue.h"
 
 // Create a queue, return a pointer to tiny_queue_t or NULL on error
 tiny_queue_t* tiny_queue_create() {
