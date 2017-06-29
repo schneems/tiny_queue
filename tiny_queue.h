@@ -2,16 +2,16 @@
 #define __TINY_QUEUE__
 
 typedef struct tiny_queue_t {
-  struct tiny_lined_list_t* head;
-  struct tiny_lined_list_t* tail;
+  struct tiny_linked_list_t* head;
+  struct tiny_linked_list_t* tail;
   pthread_mutex_t mutex;
   pthread_cond_t wakeup;
 } tiny_queue_t;
 
-typedef struct tiny_lined_list_t {
+typedef struct tiny_linked_list_t {
   void *data;
-  struct tiny_lined_list_t* next;
-} tiny_lined_list_t;
+  struct tiny_linked_list_t* next;
+} tiny_linked_list_t;
 
 // Create an instance of tiny_queue
 tiny_queue_t* tiny_queue_create();
